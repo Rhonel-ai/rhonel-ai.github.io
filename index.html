@@ -1,1 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Animation GitHub Pages</title>
+    <style>
+        /* --- STYLE CSS --- */
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e1e2f, #111119);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
 
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+
+        .btn-animate {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffffff;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-animate:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 65, 108, 0.6);
+        }
+
+        .btn-animate:active {
+            transform: scale(0.98);
+        }
+
+        /* Style des particules de l'animation */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            border-radius: 50%;
+            animation: explode 0.8s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- --- STRUCTURE HTML --- -->
+    <div class="container">
+        <h1>Mon Test GitHub Pages</h1>
+        <button class="btn-animate" id="magicBtn">Cliquez ici !</button>
+    </div>
+
+    <!-- --- SCRIPT JAVASCRIPT --- -->
+    <script>
+        const button = document.getElementById('magicBtn');
+
+        button.addEventListener('click', (e) => {
+            // Créer 30 particules à chaque clic
+            for (let i = 0; i < 30; i++) {
+                createParticle(e.clientX, e.clientY);
+            }
+        });
+
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            document.body.appendChild(particle);
+
+            // Taille aléatoire
+            const size = Math.floor(Math.random() * 12 + 6);
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+
+            // Couleur aléatoire
+            const colors = ['#ff416c', '#ff4b2b', '#00f2fe', '#4facfe', '#00ff87', '#60efff'];
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+            // Position de départ (centre du clic)
+            particle.style.left = `${x - size / 2}px`;
+            particle.style.top = `${y - size / 2}px`;
+
+            // Trajectoire aléatoire via variables CSS
+            const destinationX = (Math.random() - 0.5) * 300;
+            const destinationY = (Math.random() - 0.5) * 300;
+            particle.style.setProperty('--dx', `${destinationX}px`);
+            particle.style.setProperty('--dy', `${destinationY}px`);
+
+            // Supprimer la particule après l'animation
+            particle.addEventListener('animationend', () => {
+                particle.remove();
+            });
+        }
+    </script>
+</body>
+</html>
